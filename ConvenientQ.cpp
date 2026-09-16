@@ -88,6 +88,7 @@ class graphics{
         }
         if (!isValid){
             cin.clear();
+            cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             txtSpace(30, {"Invalid Input", "Please enter a valid text"});
             cout << "->";
@@ -176,9 +177,21 @@ class convenientQ{
     vector<profile> Accounts;
     graphics grp;
 public:
-    bool loginSetup(){
+    void loginSetup(){
+    int passwordTries=3;
+    string passwordCheck="password";
+
+    grp.txtSpace(30,{"Input password: "});
     string loginInput=grp.inputTxt();
-        
+    if(loginInput!=passwordCheck){
+        grp.txtSpace(30,{"Wrong password,","Try again?"}); 
+        if(!grp.inputBool()&&passwordTries==0){
+
+        }else{
+            loginSetup();
+            passwordTries--;
+        }
+    }
     }
     void systemInitialization(){
         grp.txtSpace(30, {"Welcome to the", "Profile Management System,", "User"});
@@ -203,9 +216,7 @@ public:
 int main() {
     convenientQ sys;
     profile prf;
-    prf.profileNaming();
-    prf.profileDisplay();
-    sys.profileCreation();
+    sys.loginSetup();
 
     return 0;
 }
