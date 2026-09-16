@@ -56,15 +56,11 @@ class graphics{
         }
         return fromConversion;
     }
-//system boot message
-    void systemBoot(){
-        txtSpace(30, {"Welcome to the","Profile Management System,", "User"});
-    }
 //bool decision box for user input
-    bool decisionBox(){
+    bool inputBool(){
         bool userDecision;
         string userInput;
-        txtSpace(30,{"Input Decision", "(Y) Yes / (N) No"});
+        txtSpace(30,{"(Y) Yes / (N) No"});
         cout<<"->";
         cin>>userInput;
         userInput=upperConv(userInput);
@@ -74,18 +70,51 @@ class graphics{
             userDecision=false;
         }else{
             txtSpace(30, {"Invalid Input", "Please enter Y or N"});
-            decisionBox();
+            inputBool();
         }
         return  userDecision;
     }
-    string inputBox(){
+    string inputTxt(){
         string userInput;
-        txtSpaceup(30);
         cout<<"->";
         cin>>userInput;
-        txtSpacedn(30);
+        while (true) {
+        bool isValid = true;
+        for (char c : userInput){
+            if (!isalpha(c)){
+                isValid = false;
+                break;
+            }
+        }
+        if (!isValid){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            txtSpace(30, {"Invalid Input", "Please enter a valid text"});
+            cout << "->";
+        }else{
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            break;
+            }
+        }
         return userInput;
     }
+int inputNum() {
+    int userInput;
+    cout<<"->";
+      while (true) {
+        cin>>userInput;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            txtSpace(30, {"Invalid Input", "Please enter a valid number"});
+            cout << "->";
+        } else {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            break;
+        }
+    }
+    return userInput;
+}
 };
 
 class profile{
@@ -97,23 +126,29 @@ public:
     vector<pair<string, int>> profileTaskList;
 
     void menuProfile(){
-     
+        
+    }
+    void profileNaming(){
+        grp.txtSpace(30, {"Enter Profile Name:"});
+        profileName=grp.inputTxt();
+        grp.txtSpace(30, {"Enter Profile Age:"});
+        profileAge=grp.inputNum();
+        grp.txtSpace(30, {"Enter Profile Position:"});
+        profilePosition=grp.inputTxt();
     }
     void profileTaskhandling(){
         grp.txtSpace(30, {"Do you want to add a task?"});
-        bool addTask = grp.decisionBox();
+        bool addTask = grp.inputBool();
         while (addTask) {
                 int taskPriority;
                 string taskName;
-                grp.txtSpace(40, {"Enter task priority (1-10):"});
-                cout << "->";
-                cin>>taskPriority;
+                grp.txtSpace(30, {"Enter task priority (1-10):"});
+                taskPriority=grp.inputNum();
                 grp.txtSpace(30, {"Enter task name:"});
-                cout << "->";
-                cin >> taskName;
+                taskName=grp.inputTxt();
                 profileTaskList.push_back({taskName, taskPriority});
                 grp.txtSpace(30, {"Add another task?"});
-                if(!grp.decisionBox()){
+                if(!grp.inputBool()){
                     break;
                 }
         }
@@ -122,21 +157,55 @@ public:
         } else {
             grp.txtSpaceup(30);
             grp.txtSpacemd(30, {"Profile Tasks:"});
-            grp.txtSpacemd(30,{""});
             for (const auto &task : profileTaskList){
-                grp.txtSpacemd(30, {task.first + " (Priority: " + to_string(task.second) + ")"});
+                grp.txtSpacemd(30, {task.first+"| Priority: "+to_string(task.second)});
             }
             grp.txtSpacedn(30);
         }
     }
+    void profileDisplay(){
+        grp.txtSpaceup(30);
+        grp.txtSpacemd(30, {"Profile Name: "+profileName});
+        grp.txtSpacemd(30, {"Profile Age: "+to_string(profileAge)});
+        grp.txtSpacemd(30, {"Profile Position: "+profilePosition});
+        grp.txtSpacedn(30);
+    }
 };
 
+class convenientQ{
+    vector<profile> Accounts;
+    graphics grp;
+public:
+    bool loginSetup(){
+    string loginInput=grp.inputTxt();
+        
+    }
+    void systemInitialization(){
+        grp.txtSpace(30, {"Welcome to the", "Profile Management System,", "User"});
+
+
+    }
+    void profileCreation(){
+        while (true){
+            grp.txtSpace(50, {"Do you want to create a new profile?"});
+            if (grp.inputBool()){
+                profile newProfile;
+                Accounts.push_back(newProfile);
+                cout<<Accounts.size()<<endl;
+            }else{
+                break;
+            }
+        }
+    }
+
+};
 
 int main() {
-    graphics grp;
+    convenientQ sys;
     profile prf;
+    prf.profileNaming();
+    prf.profileDisplay();
+    sys.profileCreation();
 
-    prf.profileTaskhandling();
-    grp.inputBox();
     return 0;
-}   
+}
