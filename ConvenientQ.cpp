@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <conio.h>
 using namespace std;
 // graphics class for text formatting and user interface
 class graphics{
@@ -102,7 +103,7 @@ class graphics{
 int inputNum() {
     int userInput;
     cout<<"->";
-      while (true) {
+    while (true) {
         cin>>userInput;
         if (cin.fail()) {
             cin.clear();
@@ -178,20 +179,42 @@ class convenientQ{
     graphics grp;
 public:
     void loginSetup(){
-    int passwordTries=3;
-    string passwordCheck="password";
+        int passwordTries=3;
+        string passwordCheck="password";
+        string loginInput;
+        
+        while (passwordTries > 0) {
+            grp.txtSpace(30,{"Input password: "});
 
-    grp.txtSpace(30,{"Input password: "});
-    string loginInput=grp.inputTxt();
-    if(loginInput!=passwordCheck){
-        grp.txtSpace(30,{"Wrong password,","Try again?"}); 
-        if(!grp.inputBool()&&passwordTries==0){
-
-        }else{
-            loginSetup();
-            passwordTries--;
+            //Password Censoring using asterisk
+            char passCen;
+            
+            while ((passCen = _getch()) != 13) {
+                if (passCen == 8) {
+                    if (!loginInput.empty()) {
+                        loginInput.pop_back();
+                        cout<< "\b \b";
+                    }
+                }else {
+                    loginInput += passCen;
+                    cout<<'*';
+                }
+            }
+            
+            if (loginInput!=passwordCheck) { //Info Checking
+                grp.txtSpace(30,{"Wrong password,","Try again?"});
+                if(!grp.inputBool()&&passwordTries==0){
+                    break;
+                }
+            passwordTries--; 
+            loginInput.clear();
+            }
+            
+            else {
+                cout<<endl<<"Correct Password"<<endl;
+                break;
+            }
         }
-    }
     }
     void systemInitialization(){
         grp.txtSpace(30, {"Welcome to the", "Profile Management System,", "User"});
