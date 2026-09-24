@@ -50,6 +50,7 @@ class graphics{
         }
         return fromConversion;
     }
+
 //function to convert a string to lowercase
     string lowerConv(string fromConversion){
         for (auto &toBeConverted : fromConversion){
@@ -57,6 +58,7 @@ class graphics{
         }
         return fromConversion;
     }
+
 //bool decision box for user input
     bool inputBool(){
         bool userDecision;
@@ -75,6 +77,8 @@ class graphics{
         }
         return  userDecision;
     }
+
+//input handling for string/charStreams
     string inputTxt(){
         string userInput;
         cout<<"->";
@@ -100,6 +104,8 @@ class graphics{
         }
         return userInput;
     }
+
+//input handling for integers
 int inputNum() {
     int userInput;
     cout<<"->";
@@ -119,6 +125,7 @@ int inputNum() {
 }
 };
 
+//profile related tasks and handling
 class profile{
     graphics grp;
 public:
@@ -130,6 +137,7 @@ public:
     void menuProfile(){
         
     }
+    //adding new profile initialization
     void profileNaming(){
         grp.txtSpace(30, {"Enter Profile Name:"});
         profileName=grp.inputTxt();
@@ -138,7 +146,8 @@ public:
         grp.txtSpace(30, {"Enter Profile Position:"});
         profilePosition=grp.inputTxt();
     }
-    void profileTaskhandling(){
+    //adding profile tasks
+    void profileTaskAddition(){
         grp.txtSpace(30, {"Do you want to add a task?"});
         bool addTask = grp.inputBool();
         while (addTask) {
@@ -165,15 +174,40 @@ public:
             grp.txtSpacedn(30);
         }
     }
+
+    //sorting algorithm
+    void profileQuickSort(vector<pair<string, int>>& vec, int low, int high) {
+    if (low >= high) {
+        return; 
+    }
+
+    int pivot = vec[high].second;
+    int i = low;
+
+    for (int j = low; j < high; j++) {
+        if (vec[j].second < pivot) {
+            pair<string, int> temp = vec[i];
+            vec[i] = vec[j];
+            vec[j] = temp;
+            i++; 
+        }
+    }
+
+    pair<string, int> temp = vec[i];
+    vec[i] = vec[high];
+    vec[high] = temp;
+
+    profileQuickSort(vec, low, i - 1);  
+    profileQuickSort(vec, i + 1, high); 
+}
     void profileDisplay(){
         grp.txtSpaceup(30);
-        grp.txtSpacemd(30, {"Profile Name: "+profileName});
-        grp.txtSpacemd(30, {"Profile Age: "+to_string(profileAge)});
-        grp.txtSpacemd(30, {"Profile Position: "+profilePosition});
+        grp.txtSpacemd(30, {"Profile Name: "+profileName, "Profile Age: "+to_string(profileAge), "Profile Position: "+profilePosition});
         grp.txtSpacedn(30);
     }
 };
 
+//
 class convenientQ{
     vector<profile> Accounts;
     graphics grp;
@@ -202,6 +236,7 @@ public:
             }
             
             if (loginInput!=passwordCheck) { //Info Checking
+                cout<<endl;
                 grp.txtSpace(30,{"Wrong password,","Try again?"});
                 if(!grp.inputBool()&&passwordTries==0){
                     break;
@@ -219,13 +254,13 @@ public:
     void systemInitialization(){
         grp.txtSpace(30, {"Welcome to the", "Profile Management System,", "User"});
 
-
     }
     void profileCreation(){
         while (true){
             grp.txtSpace(50, {"Do you want to create a new profile?"});
             if (grp.inputBool()){
                 profile newProfile;
+                newProfile.profileNaming(); 
                 Accounts.push_back(newProfile);
                 cout<<Accounts.size()<<endl;
             }else{
@@ -240,6 +275,8 @@ int main() {
     convenientQ sys;
     profile prf;
     sys.loginSetup();
+    sys.systemInitialization();
+    sys.profileCreation();
 
     return 0;
 }
