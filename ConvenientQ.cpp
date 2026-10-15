@@ -308,7 +308,7 @@ public:
         profileQuickSort(vec, low, i - 1);
         profileQuickSort(vec, i + 1, high);
     }
-
+    // sorting algorithm but for task name
     void profileQuickSortName(vector<pair<string, int>> &vec, int low, int high)
     {
         if (low >= high)
@@ -361,7 +361,7 @@ public:
         }
         return found;
     }
-
+    //forward function for algorithm sorting
     void profileSortTasks()
     {
         profileQuickSort(profileTaskList, 0, (int)profileTaskList.size() - 1);
@@ -443,7 +443,6 @@ public:
             grp.txtSpace(44, {"Next up: " + taskQueue.front().first});
         }
     }
-
     // show task sorted by priority
     void profileDisplayTasks()
     {
@@ -464,7 +463,7 @@ public:
         }
         grp.txtSpacedn(44);
     }
-
+    // logic to display profile data
     void profileDisplay()
     {
         grp.txtSpaceup(30);
@@ -528,10 +527,12 @@ public:
         grp.txtSpace(30, {"Too many attempts."});
         exit(EXIT_FAILURE);
     }
+    // welcome message
     void systemInitialization()
     {
         grp.txtSpace(30, {"Welcome to the", "Profile Management System,", "User"});
     }
+    // profile creation logic
     void profileCreation()
     {
         while (true)
@@ -581,6 +582,7 @@ public:
             }
         }
     }
+    // main menu for self-calling loop
     void mainMenu()
     {
         while (true)
