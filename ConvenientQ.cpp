@@ -6,6 +6,7 @@
 #include <list>
 #include <queue>
 #include <conio.h>
+#include <cstdlib>
 using namespace std;
 // graphics class for text formatting and user interface
 class graphics
@@ -201,12 +202,12 @@ public:
         while (running)
         {
             grp.txtSpace(40, {"Task Menu: " + profileName,
-                              "1. Profile Details",
-                              "2. Add tasks",
-                              "3. View tasks (sorted)",
-                              "4. Search task",
-                              "5. Complete next task",
-                              "6. Back"});
+                            "1. Profile Details",
+                            "2. Add tasks",
+                            "3. View tasks (sorted)",
+                            "4. Search task",
+                            "5. Complete next task",
+                            "6. Back"});
             int choice = grp.inputNum();
             switch (choice)
             {
@@ -520,12 +521,12 @@ public:
                 grp.txtSpace(30, {"Wrong password,", "Try again?"});
                 if (!grp.inputBool())
                 {
-                    return false;
+                    exit(EXIT_FAILURE);
                 }
             }
         }
         grp.txtSpace(30, {"Too many attempts."});
-        return false;
+        exit(EXIT_FAILURE);
     }
     void systemInitialization()
     {
